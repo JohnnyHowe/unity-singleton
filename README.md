@@ -17,7 +17,8 @@ In Unity
 3. Paste `https://github.com/JohnnyHowe/com.jonathonoh.unity.systemsmanagement.git` and click add.
 
 ## 2. Create Systems prefab
-This prefab must be in the root of a resources folder and called "Systems". This is where you'll put all of your system components.
+This prefab must be in the root of a resources folder and called "Systems". This is where you'll put all of your system components.\
+Add the `SystemsInitializer` component to the root "Systems" GameObject.
 
 I'd recommend putting them on child objects to keep it tidy. 
 So the hierarchy might look like this:
@@ -32,7 +33,7 @@ Systems
 ## 3. Create a System
 Just like any other Singleton
 
-```
+```csharp
 public class ThingIWantToAccessEverywhere: GameSystem<ThingIWantToAccessEverywhere>
 {
     public void DoAThing()
@@ -45,18 +46,18 @@ public class ThingIWantToAccessEverywhere: GameSystem<ThingIWantToAccessEverywhe
 ## 4. Done
 Now you can call it anywhere
 
-```
+```csharp
 ThingIWantToAccessEverywhere.Instance.DoAThing();
 ```
 ## Using With Interfaces
 Due to how I've written the code, this should be a slower. It's up to you to pick your poison.
-```
+```csharp
 public interface HandyInterface
 {
     public void DoAThing();
 }
 ```
-```
+```csharp
 public class ThingIWantToAccessEverywhere: GameSystem<ThingIWantToAccessEverywhere>, HandyInterface
 {
     public void DoAThing()
@@ -66,6 +67,6 @@ public class ThingIWantToAccessEverywhere: GameSystem<ThingIWantToAccessEverywhe
 }
 ```
 And access it with
-```
-GameSystem<HandyInterface>.GetInstance().DoAThing();
+```csharp
+GameSystem<HandyInterface>.Instance.DoAThing();
 ```
