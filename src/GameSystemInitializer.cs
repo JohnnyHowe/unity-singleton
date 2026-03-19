@@ -11,12 +11,19 @@ namespace JonathonOH.UnityTools.SystemsManagement
 		public readonly HashSet<IGameSystem> AllSystems;
 		public readonly List<IGameSystem> SystemsInInitialzationOrder;
 		private List<IGameSystem> _systemsLeftToInitialize;
+		private bool _verbose;
 
-		public GameSystemInitializer(Transform root)
+		public GameSystemInitializer(Transform root, bool verbose = false)
 		{
+			_verbose = verbose;
 			Failed = new HashSet<IGameSystem>();
+
 			AllSystems = new HashSet<IGameSystem>(GetAllGameSystems(root));
+			Log("Found GameSystems:\n - " + string.Join("\n - ", AllSystems));
+
 			SystemsInInitialzationOrder = new GameSystemInitializationOrderSorter(AllSystems).GetOrderedByDependencies().ToList();
+			Log("Ordered GameSystems:\n - " + string.Join("\n - ", SystemsInInitialzationOrder));
+
 			_systemsLeftToInitialize = new List<IGameSystem>(SystemsInInitialzationOrder);
 		}
 
@@ -24,6 +31,7 @@ namespace JonathonOH.UnityTools.SystemsManagement
 		{
 			foreach (IGameSystem gameSystem in _systemsLeftToInitialize)
 			{
+				Log($"Attempting to initialize {gameSystem.GetType().Name}");
 				TryInitialize(gameSystem);
 			}
 		}
@@ -57,6 +65,17 @@ namespace JonathonOH.UnityTools.SystemsManagement
 				string typeName = gameSystem.GetType().Name;
 				Debug.LogError($"Could not instantiate {typeName}: {typeName}.IsInitialized() returned false!");
 				Failed.Add(gameSystem);
+				return;
+			}
+
+			Log($"Successfully initialized {gameSystem.GetType().Name}");
+		}
+
+		private void Log(string text)
+		{
+			if (_verbose)
+			{
+				Debug.Log($"[{GetType().Name}] {text}");
 			}
 		}
 	}
