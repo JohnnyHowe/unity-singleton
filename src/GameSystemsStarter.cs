@@ -10,18 +10,16 @@ namespace JonathonOH.UnityTools.SystemsManagement
 		public HashSet<IGameSystem> Failed { get; private set; }
 		public readonly HashSet<IGameSystem> AllSystems;
 		public readonly List<IGameSystem> SystemsInInitialzationOrder;
-		private bool _verbose;
 
-		public GameSystemStarter(Transform root, bool verbose = false)
+		public GameSystemStarter(Transform root)
 		{
-			_verbose = verbose;
 			Failed = new HashSet<IGameSystem>();
 
 			AllSystems = new HashSet<IGameSystem>(GetAllGameSystems(root));
-			Log("Found GameSystems:\n - " + string.Join("\n - ", AllSystems));
+			Debug.Log("Found GameSystems:\n - " + string.Join("\n - ", AllSystems));
 
 			SystemsInInitialzationOrder = new GameSystemInitializationOrderSorter(AllSystems).GetOrderedByDependencies().ToList();
-			Log("Ordered GameSystems:\n - " + string.Join("\n - ", SystemsInInitialzationOrder));
+			Debug.Log("Ordered GameSystems:\n - " + string.Join("\n - ", SystemsInInitialzationOrder));
 		}
 
 		public void Initialize()
@@ -66,15 +64,7 @@ namespace JonathonOH.UnityTools.SystemsManagement
 				return;
 			}
 
-			Log($"Successfully initialized {gameSystem.GetType().Name}");
-		}
-
-		private void Log(string text)
-		{
-			if (_verbose)
-			{
-				Debug.Log($"[SystemsManagement][{GetType().Name}] {text}");
-			}
+			Debug.Log($"Successfully initialized {gameSystem.GetType().Name}");
 		}
 	}
 }

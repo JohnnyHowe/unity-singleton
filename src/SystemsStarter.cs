@@ -15,8 +15,6 @@ namespace JonathonOH.UnityTools.SystemsManagement
 		private const string systemPrefabName = "Systems";
 		private static SystemsStarter _instance;
 
-		[SerializeField] private bool _verbose = false;
-
 		private GameSystemStarter _gameSystemStarter;
 		private InitializationState _initializationState = InitializationState.NotStarted;
 
@@ -89,10 +87,10 @@ namespace JonathonOH.UnityTools.SystemsManagement
 		/// <summary>Initializes child systems in order with dependency checks.</summary>
 		private void StartSystems()
 		{
-			if (_verbose) Debug.Log($"[SystemsManagement][{GetType().Name}] InitialzingSystems");
+			Debug.Log($"[SystemsManagement][{GetType().Name}] InitialzingSystems");
 
 			_initializationState = InitializationState.Initializing;
-			_gameSystemStarter = new GameSystemStarter(transform, _verbose);
+			_gameSystemStarter = new GameSystemStarter(transform);
 			_gameSystemStarter.Initialize();
 			_initializationState = InitializationState.Done;
 		}
