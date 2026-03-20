@@ -23,8 +23,6 @@ namespace JonathonOH.UnityTools.SystemsManagement
 		private bool Awoken => ((IGameSystem)this).Awoken;
 		private bool _awoken = false;
 
-		private bool _appQuitting = false;
-
 		private static T GetInstance()
 		{
 			if (_instance is null) SystemsStarter.PromptLoad();
