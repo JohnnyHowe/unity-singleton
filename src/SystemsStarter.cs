@@ -79,6 +79,7 @@ namespace JonathonOH.UnityTools.SystemsManagement
 				throw new Exception($"{typeof(SystemsStarter).Name} does not exist on Systems prefab ({prefab})");
 			}
 
+			DontDestroyOnLoad(systemsStarter);
 			_instance = systemsStarter;
 		}
 
