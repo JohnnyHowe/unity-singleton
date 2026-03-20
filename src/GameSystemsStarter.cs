@@ -73,7 +73,7 @@ namespace JonathonOH.UnityTools.SystemsManagement
 		{
 			if (_verbose)
 			{
-				Debug.Log($"[{GetType().Name}] {text}");
+				Debug.Log($"[SystemsManagement][{GetType().Name}] {text}");
 			}
 		}
 	}

@@ -96,7 +96,7 @@ namespace JonathonOH.UnityTools.SystemsManagement
 		/// <summary>Initializes child systems in order with dependency checks.</summary>
 		private void StartSystems()
 		{
-			if (_verbose) Debug.Log($"[{GetType().Name}] InitialzingSystems");
+			if (_verbose) Debug.Log($"[SystemsManagement][{GetType().Name}] InitialzingSystems");
 
 			_initializationState = InitializationState.Initializing;
 			_gameSystemStarter = new GameSystemStarter(transform, _verbose);

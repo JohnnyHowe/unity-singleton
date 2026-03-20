@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 namespace JonathonOH.UnityTools.SystemsManagement
@@ -24,6 +23,8 @@ namespace JonathonOH.UnityTools.SystemsManagement
 		private bool Awoken => ((IGameSystem)this).Awoken;
 		private bool _awoken = false;
 
+		private bool _appQuitting = false;
+
 		private static T GetInstance()
 		{
 			if (_instance is null) SystemsStarter.PromptLoad();
@@ -34,7 +35,7 @@ namespace JonathonOH.UnityTools.SystemsManagement
 		{
 			if (Awoken)
 			{
-				Debug.LogError($"{GetType().Name}.AwakeSystem called but it is already Awoken!");
+				Debug.LogError($"[SystemsManagement][GameSystem<T>] {GetType().Name}.AwakeSystem called but it is already Awoken!");
 				return;
 			}
 			AwakeSystem();
@@ -46,7 +47,7 @@ namespace JonathonOH.UnityTools.SystemsManagement
 		{
 			if (Initialized)
 			{
-				Debug.LogError($"{GetType().Name}.Initialize called but it is already Initialized!");
+				Debug.LogError($"[SystemsManagement][GameSystem<T>] {GetType().Name}.Initialize called but it is already Initialized!");
 				return;
 			}
 			_instance = GetComponent<T>();

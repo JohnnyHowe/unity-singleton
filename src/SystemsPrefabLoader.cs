@@ -18,7 +18,7 @@ namespace JonathonOH.UnityTools.SystemsManagement
                 break;
             }
 
-            if (systemPrefab is null) Debug.LogError("Could not find prefab: " + prefabName);
+            if (systemPrefab is null) Debug.LogError($"[SystemsManagement][{typeof(SystemsPrefabLoader).Name}] Could not find prefab: " + prefabName);
             return systemPrefab;
         }
     }
