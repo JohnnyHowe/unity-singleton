@@ -57,22 +57,14 @@ namespace JonathonOH.UnityTools.SystemsManagement
 		/// <param name="systemsStarter">Initializer found on the Systems root.</param>
 		private static bool DoesSystemObjectExist(out SystemsStarter systemsStarter)
 		{
-			GameObject systemObject = GameObject.Find(systemPrefabName);
-			if (systemObject != null && systemObject.TryGetComponent(out SystemsStarter found))
-			{
-				systemsStarter = found;
-				return true;
-			}
-
-			systemsStarter = null;
-			return false;
+			systemsStarter = FindFirstObjectByType<SystemsStarter>();
+			return systemsStarter != null;
 		}
 
 		private static void CreateSystemsObject()
 		{
-			GameObject prefab = SystemsPrefabLoader.GetPrefab(systemPrefabName);
+			GameObject prefab = SystemsPrefabLoader.GetPrefab();
 			GameObject systems = Instantiate(prefab);
-			systems.name = systemPrefabName;
 
 			if (!systems.TryGetComponent(out SystemsStarter systemsStarter))
 			{
