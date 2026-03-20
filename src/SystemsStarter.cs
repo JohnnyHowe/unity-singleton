@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace JonathonOH.UnityTools.SystemsManagement
 {
-	public class SystemsInitializer : MonoBehaviour
+	public class SystemsStarter : MonoBehaviour
 	{
 		public enum InitializationState
 		{
@@ -13,11 +13,11 @@ namespace JonathonOH.UnityTools.SystemsManagement
 		}
 
 		private const string systemPrefabName = "Systems";
-		private static SystemsInitializer _instance;
+		private static SystemsStarter _instance;
 
 		[SerializeField] private bool _verbose = false;
 
-		private GameSystemInitializer _gameSystemInitializer;
+		private GameSystemStarter _gameSystemStarter;
 		private InitializationState _initializationState = InitializationState.NotStarted;
 
 		#region Static
@@ -25,13 +25,13 @@ namespace JonathonOH.UnityTools.SystemsManagement
 		/// <summary>Ensures the Systems prefab is instantiated and initialized.</summary>
 		public static void PromptLoad()
 		{
-			EnsureInstanceExistsAndSystemsInitialized();
+			EnsureInstanceExistsAndSystemsStarted();
 		}
 
-		private static void EnsureInstanceExistsAndSystemsInitialized()
+		private static void EnsureInstanceExistsAndSystemsStarted()
 		{
 			EnsureInstanceExists();
-			_instance.InitializeSystemsIfRequired();
+			_instance.StartSystemsIfRequired();
 		}
 
 		/// <summary>Finds or creates the Systems prefab and returns its initializer.</summary>
@@ -41,7 +41,7 @@ namespace JonathonOH.UnityTools.SystemsManagement
 			if (_instance != null) return;
 
 			// Object exists but instance not populated?
-			if (DoesSystemObjectExist(out SystemsInitializer existing))
+			if (DoesSystemObjectExist(out SystemsStarter existing))
 			{
 				_instance = existing;
 			}
@@ -54,17 +54,17 @@ namespace JonathonOH.UnityTools.SystemsManagement
 		}
 
 		/// <summary>Checks for an existing Systems root and returns its initializer.</summary>
-		/// <param name="initializer">Initializer found on the Systems root.</param>
-		private static bool DoesSystemObjectExist(out SystemsInitializer initializer)
+		/// <param name="systemsStarter">Initializer found on the Systems root.</param>
+		private static bool DoesSystemObjectExist(out SystemsStarter systemsStarter)
 		{
 			GameObject systemObject = GameObject.Find(systemPrefabName);
-			if (systemObject != null && systemObject.TryGetComponent(out SystemsInitializer found))
+			if (systemObject != null && systemObject.TryGetComponent(out SystemsStarter found))
 			{
-				initializer = found;
+				systemsStarter = found;
 				return true;
 			}
 
-			initializer = null;
+			systemsStarter = null;
 			return false;
 		}
 
@@ -74,32 +74,33 @@ namespace JonathonOH.UnityTools.SystemsManagement
 			GameObject systems = Instantiate(prefab);
 			systems.name = systemPrefabName;
 
-			if (!systems.TryGetComponent(out SystemsInitializer initializer))
+			if (!systems.TryGetComponent(out SystemsStarter systemsStarter))
 			{
-				throw new Exception($"{typeof(SystemsInitializer).Name} does not exist on Systems prefab ({prefab})");
+				throw new Exception($"{typeof(SystemsStarter).Name} does not exist on Systems prefab ({prefab})");
 			}
 
-			_instance = initializer;
+			_instance = systemsStarter;
 		}
 
 		#endregion
 		#region Instance
 
-		private void InitializeSystemsIfRequired()
+		private void StartSystemsIfRequired()
 		{
 			if (_initializationState == InitializationState.NotStarted)
 			{
-				InitializeSystems();
+				StartSystems();
 			}
 		}
 
 		/// <summary>Initializes child systems in order with dependency checks.</summary>
-		private void InitializeSystems()
+		private void StartSystems()
 		{
 			if (_verbose) Debug.Log($"[{GetType().Name}] InitialzingSystems");
+
 			_initializationState = InitializationState.Initializing;
-			_gameSystemInitializer = new GameSystemInitializer(transform, _verbose);
-			_gameSystemInitializer.Initialize();
+			_gameSystemStarter = new GameSystemStarter(transform, _verbose);
+			_gameSystemStarter.Initialize();
 			_initializationState = InitializationState.Done;
 		}
 

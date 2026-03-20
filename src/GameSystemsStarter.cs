@@ -5,15 +5,14 @@ using UnityEngine;
 
 namespace JonathonOH.UnityTools.SystemsManagement
 {
-	internal class GameSystemInitializer
+	internal class GameSystemStarter
 	{
 		public HashSet<IGameSystem> Failed { get; private set; }
 		public readonly HashSet<IGameSystem> AllSystems;
 		public readonly List<IGameSystem> SystemsInInitialzationOrder;
-		private List<IGameSystem> _systemsLeftToInitialize;
 		private bool _verbose;
 
-		public GameSystemInitializer(Transform root, bool verbose = false)
+		public GameSystemStarter(Transform root, bool verbose = false)
 		{
 			_verbose = verbose;
 			Failed = new HashSet<IGameSystem>();
@@ -23,16 +22,13 @@ namespace JonathonOH.UnityTools.SystemsManagement
 
 			SystemsInInitialzationOrder = new GameSystemInitializationOrderSorter(AllSystems).GetOrderedByDependencies().ToList();
 			Log("Ordered GameSystems:\n - " + string.Join("\n - ", SystemsInInitialzationOrder));
-
-			_systemsLeftToInitialize = new List<IGameSystem>(SystemsInInitialzationOrder);
 		}
 
 		public void Initialize()
 		{
-			foreach (IGameSystem gameSystem in _systemsLeftToInitialize)
+			foreach (IGameSystem gameSystem in SystemsInInitialzationOrder)
 			{
-				Log($"Attempting to initialize {gameSystem.GetType().Name}");
-				TryInitialize(gameSystem);
+				TryInstantiate(gameSystem);
 			}
 		}
 
@@ -42,17 +38,19 @@ namespace JonathonOH.UnityTools.SystemsManagement
 			{
 				if (!child.gameObject.activeInHierarchy) continue;
 				if (!child.TryGetComponent(out IGameSystem system)) continue;
-				if (system.IsInstantiated()) continue;
+				if (system.Initialized) continue;
+				if (system.Awoken) continue;
 				if (Failed.Contains(system)) continue;
 				yield return system;
 			}
 		}
 
-		private void TryInitialize(IGameSystem gameSystem)
+		private void TryInstantiate(IGameSystem gameSystem)
 		{
+			gameSystem.Initialize();
 			try
 			{
-				gameSystem.Instantiate();
+				gameSystem.AwakeSystem();
 			}
 			catch (Exception error)
 			{
@@ -60,7 +58,7 @@ namespace JonathonOH.UnityTools.SystemsManagement
 				return;
 			}
 
-			if (!gameSystem.IsInstantiated())
+			if (!gameSystem.Initialized)
 			{
 				string typeName = gameSystem.GetType().Name;
 				Debug.LogError($"Could not instantiate {typeName}: {typeName}.IsInitialized() returned false!");
