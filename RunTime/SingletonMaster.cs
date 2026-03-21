@@ -90,7 +90,7 @@ namespace JonathonOH.Unity.Singletons
 
 			_initializationState = InitializationState.Initializing;
 			_singletonsBootstrap = new SingletonBootstrap(transform);
-			_singletonsBootstrap.Initialize();
+			_singletonsBootstrap.StartSingletons();
 			_initializationState = InitializationState.Done;
 		}
 

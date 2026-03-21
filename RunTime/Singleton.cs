@@ -7,9 +7,8 @@ namespace JonathonOH.Unity.Singletons
 		public static T Instance { get => GetInstance(); }
 		private static T _instance;
 
-		bool ISingleton.Initialized => _initialized;
+		bool ISingleton.Initialized => _instance != null;
 		private bool Initialized => ((ISingleton)this).Initialized;
-		private bool _initialized = false;
 
 		bool ISingleton.Awoken => _awoken;
 		private bool Awoken => ((ISingleton)this).Awoken;
@@ -21,7 +20,7 @@ namespace JonathonOH.Unity.Singletons
 			return _instance;
 		}
 
-		void ISingleton.AwakeSystem()
+		void ISingleton.Initialize()
 		{
 			if (Awoken)
 			{
@@ -33,7 +32,7 @@ namespace JonathonOH.Unity.Singletons
 
 		protected virtual void AwakeSystem() { }
 
-		void ISingleton.Initialize()
+		void ISingleton.SetInstance()
 		{
 			if (Initialized)
 			{
@@ -41,7 +40,6 @@ namespace JonathonOH.Unity.Singletons
 				return;
 			}
 			_instance = GetComponent<T>();
-			_initialized = true;
 		}
 	}
 }

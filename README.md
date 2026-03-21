@@ -26,7 +26,7 @@ public class ExampleSingleton: Singleton<ExampleSingleton>
 {
 	/// AwakeSystem is called similarly to MonoBehaviour.Awake.
 	/// This is where you put your startup/initialization
-	protected override void AwakeSystem() { }
+	protected override void Initialize() { }
 
 	public void DoSomething() { }
 }

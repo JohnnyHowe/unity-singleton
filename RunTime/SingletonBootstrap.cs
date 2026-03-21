@@ -22,11 +22,11 @@ namespace JonathonOH.Unity.Singletons
 			Debug.Log("Ordered Singletons:\n - " + string.Join("\n - ", SystemsInInitialzationOrder));
 		}
 
-		public void Initialize()
+		public void StartSingletons()
 		{
 			foreach (ISingleton singleton in SystemsInInitialzationOrder)
 			{
-				TryInstantiate(singleton);
+				TryStart(singleton);
 			}
 		}
 
@@ -43,12 +43,12 @@ namespace JonathonOH.Unity.Singletons
 			}
 		}
 
-		private void TryInstantiate(ISingleton singleton)
+		private void TryStart(ISingleton singleton)
 		{
-			singleton.Initialize();
+			singleton.SetInstance();
 			try
 			{
-				singleton.AwakeSystem();
+				singleton.Initialize();
 			}
 			catch (Exception error)
 			{

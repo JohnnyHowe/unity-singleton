@@ -4,7 +4,7 @@ namespace JonathonOH.Unity.Singletons
 	{
 		public bool Initialized { get; }
 		public bool Awoken { get; }
+		internal void SetInstance();
 		internal void Initialize();
-		internal void AwakeSystem();
 	}
 }
