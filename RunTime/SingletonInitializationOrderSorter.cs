@@ -11,12 +11,12 @@ namespace JonathonOH.Unity.Singletons
 		private List<ISingleton> _ordered;
 		Dictionary<Type, Type[]> _dependencies;
 
-		public SingletonInitializationOrderSorter(IEnumerable<ISingleton> singletons)
+		internal SingletonInitializationOrderSorter(IEnumerable<ISingleton> singletons)
 		{
 			_allSingletons = new HashSet<ISingleton>(singletons);
 		}
 
-		public IEnumerable<ISingleton> GetOrderedByDependencies()
+		internal IEnumerable<ISingleton> GetOrderedByDependencies()
 		{
 			_notYetOrdered = new HashSet<ISingleton>(_allSingletons);
 			_ordered = new List<ISingleton>();

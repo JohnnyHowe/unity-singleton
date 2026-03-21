@@ -2,11 +2,11 @@ using UnityEngine;
 
 namespace JonathonOH.Unity.Singletons
 {
-	public static class MasterPrefabLoader
+	internal static class MasterPrefabLoader
 	{
 		/// <summary>Loads the Systems prefab from Resources by name.</summary>
 		/// <param name="prefabName">Name of the Systems prefab.</param>
-		public static GameObject GetPrefab()
+		internal static GameObject GetPrefab()
 		{
 			GameObject[] prefabs = Resources.LoadAll<GameObject>("");
 			GameObject systemPrefab = null;

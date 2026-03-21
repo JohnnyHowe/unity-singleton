@@ -7,11 +7,11 @@ namespace JonathonOH.Unity.Singletons
 {
 	internal class SingletonBootstrap
 	{
-		public HashSet<ISingleton> Failed { get; private set; }
-		public readonly HashSet<ISingleton> AllSystems;
-		public readonly List<ISingleton> SystemsInInitialzationOrder;
+		internal HashSet<ISingleton> Failed { get; private set; }
+		internal readonly HashSet<ISingleton> AllSystems;
+		internal readonly List<ISingleton> SystemsInInitialzationOrder;
 
-		public SingletonBootstrap(Transform root)
+		internal SingletonBootstrap(Transform root)
 		{
 			Failed = new HashSet<ISingleton>();
 
@@ -22,7 +22,7 @@ namespace JonathonOH.Unity.Singletons
 			Debug.Log("Ordered Singletons:\n - " + string.Join("\n - ", SystemsInInitialzationOrder));
 		}
 
-		public void StartSingletons()
+		internal void StartSingletons()
 		{
 			foreach (ISingleton singleton in SystemsInInitialzationOrder)
 			{

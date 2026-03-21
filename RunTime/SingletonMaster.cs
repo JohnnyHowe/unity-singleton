@@ -5,7 +5,7 @@ namespace JonathonOH.Unity.Singletons
 {
 	public class SingletonMaster : MonoBehaviour
 	{
-		public enum InitializationState
+		private enum InitializationState
 		{
 			NotStarted,
 			Initializing,
