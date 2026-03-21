@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace JonathonOH.UnityTools.SystemsManagement
+namespace JonathonOH.Unity.Singletons
 {
 	public static class SystemsPrefabLoader
 	{
@@ -13,14 +13,14 @@ namespace JonathonOH.UnityTools.SystemsManagement
 
 			foreach (GameObject prefab in prefabs)
 			{
-				if (!prefab.TryGetComponent(out SystemsStarter _starter)) continue;
+				if (!prefab.TryGetComponent(out SingletonMaster _starter)) continue;
 				systemPrefab = prefab;
 				break;
 			}
 
 			if (systemPrefab is null)
 			{
-				Debug.LogError($"[SystemsManagement][{typeof(SystemsPrefabLoader).Name}] Could not find prefab in Resources folder with script {typeof(SystemsStarter).Name}");
+				Debug.LogError($"[SystemsManagement][{typeof(SystemsPrefabLoader).Name}] Could not find prefab in Resources folder with script {typeof(SingletonMaster).Name}");
 			}
 			return systemPrefab;
 		}

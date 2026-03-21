@@ -1,9 +1,9 @@
 using System;
 using UnityEngine;
 
-namespace JonathonOH.UnityTools.SystemsManagement
+namespace JonathonOH.Unity.Singletons
 {
-	public class SystemsStarter : MonoBehaviour
+	public class SingletonMaster : MonoBehaviour
 	{
 		public enum InitializationState
 		{
@@ -12,10 +12,9 @@ namespace JonathonOH.UnityTools.SystemsManagement
 			Done,
 		}
 
-		private const string systemPrefabName = "Systems";
-		private static SystemsStarter _instance;
+		private static SingletonMaster _instance;
 
-		private GameSystemStarter _gameSystemStarter;
+		private SingletonBootstrap _singletonsBootstrap;
 		private InitializationState _initializationState = InitializationState.NotStarted;
 
 		#region Static
@@ -39,7 +38,7 @@ namespace JonathonOH.UnityTools.SystemsManagement
 			if (_instance != null) return;
 
 			// Object exists but instance not populated?
-			if (DoesSystemObjectExist(out SystemsStarter existing))
+			if (DoesSystemObjectExist(out SingletonMaster existing))
 			{
 				_instance = existing;
 			}
@@ -53,9 +52,9 @@ namespace JonathonOH.UnityTools.SystemsManagement
 
 		/// <summary>Checks for an existing Systems root and returns its initializer.</summary>
 		/// <param name="systemsStarter">Initializer found on the Systems root.</param>
-		private static bool DoesSystemObjectExist(out SystemsStarter systemsStarter)
+		private static bool DoesSystemObjectExist(out SingletonMaster systemsStarter)
 		{
-			systemsStarter = FindFirstObjectByType<SystemsStarter>();
+			systemsStarter = FindFirstObjectByType<SingletonMaster>();
 			return systemsStarter != null;
 		}
 
@@ -64,9 +63,9 @@ namespace JonathonOH.UnityTools.SystemsManagement
 			GameObject prefab = SystemsPrefabLoader.GetPrefab();
 			GameObject systems = Instantiate(prefab);
 
-			if (!systems.TryGetComponent(out SystemsStarter systemsStarter))
+			if (!systems.TryGetComponent(out SingletonMaster systemsStarter))
 			{
-				throw new Exception($"{typeof(SystemsStarter).Name} does not exist on Systems prefab ({prefab})");
+				throw new Exception($"{typeof(SingletonMaster).Name} does not exist on Systems prefab ({prefab})");
 			}
 
 			DontDestroyOnLoad(systemsStarter);
@@ -90,8 +89,8 @@ namespace JonathonOH.UnityTools.SystemsManagement
 			Debug.Log($"[SystemsManagement][{GetType().Name}] InitialzingSystems");
 
 			_initializationState = InitializationState.Initializing;
-			_gameSystemStarter = new GameSystemStarter(transform);
-			_gameSystemStarter.Initialize();
+			_singletonsBootstrap = new SingletonBootstrap(transform);
+			_singletonsBootstrap.Initialize();
 			_initializationState = InitializationState.Done;
 		}
 
