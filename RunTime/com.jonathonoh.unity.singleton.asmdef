@@ -1,5 +1,5 @@
 {
-    "name": "com.jonathonoh.unity.systemsmanagement",
+    "name": "com.jonathonoh.unity.singleton",
     "rootNamespace": "",
     "references": [],
     "includePlatforms": [],
