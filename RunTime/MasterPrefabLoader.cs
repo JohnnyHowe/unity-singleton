@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace JonathonOH.Unity.Singletons
 {
-	public static class SystemsPrefabLoader
+	public static class MasterPrefabLoader
 	{
 		/// <summary>Loads the Systems prefab from Resources by name.</summary>
 		/// <param name="prefabName">Name of the Systems prefab.</param>
@@ -20,7 +20,7 @@ namespace JonathonOH.Unity.Singletons
 
 			if (systemPrefab is null)
 			{
-				Debug.LogError($"[SystemsManagement][{typeof(SystemsPrefabLoader).Name}] Could not find prefab in Resources folder with script {typeof(SingletonMaster).Name}");
+				Debug.LogError($"[SystemsManagement][{typeof(MasterPrefabLoader).Name}] Could not find prefab in Resources folder with script {typeof(SingletonMaster).Name}");
 			}
 			return systemPrefab;
 		}

@@ -60,7 +60,7 @@ namespace JonathonOH.Unity.Singletons
 
 		private static void CreateSystemsObject()
 		{
-			GameObject prefab = SystemsPrefabLoader.GetPrefab();
+			GameObject prefab = MasterPrefabLoader.GetPrefab();
 			GameObject systems = Instantiate(prefab);
 
 			if (!systems.TryGetComponent(out SingletonMaster systemsStarter))
