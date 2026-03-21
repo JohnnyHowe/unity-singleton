@@ -2,5 +2,11 @@
     "displayName": "Systems Management",
     "name": "com.jonathonoh.unity.systemsmanagement",
     "version": "1.0.0",
-    "description": "A Singleton implementation for Unity"
+    "description": "A Singleton implementation for Unity",
+	"author": {
+		"name": "Jonathon Oram Howe",
+		"email": "jonathonoh.gamedev@gmail.com",
+		"url": "https://github.com/JohnnyHowe"
+	},
+	"dependencies": {}
 }
