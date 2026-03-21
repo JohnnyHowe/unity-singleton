@@ -1,72 +1,55 @@
-SystemsManagement is a Unity Singleton implementation. 
-
 Before using this or any other singleton implementation please consider whether it is right for your project. Singletons have a lot of drawbacks. 
 
-# How It Works/Why Use This Implementation
-A prefab contains all your game systems. This prefab persists through scenes and is loaded in only when needed (lazy loading).
+# Overview
+Create `MonoBehaviour` singletons (called `GameSystem`).
+* Serialize fields and accessing them in the inspector
+* Hook into Unity's loop (`Update`, `FixedUpdate`, etc)
+* **No more initialization scene!**
 
-Using a prefab instead of having a separate initialization scene (like many other singleton implementations) means we don't have to run an init scene first - we can start anywhere we want.
+# Install (UPM)
+1. In Unity, open the Package Manager\
+**Window** > **Package Management** > **Package Manager**
 
-We also don't have to open the init scene in editor to edit the singletons.
+2. Install Package from git URL\
+**Package Manager** > **+** (in top left) > **Install Package from git URL**
 
-# How To Use
-## 1. Install Package
-In Unity 
-1. Go to the Package Manager 
-2. Click the little plus in the top left and "Add Package From git URL ..."
-3. Paste `https://github.com/JohnnyHowe/com.jonathonoh.unity.systemsmanagement.git` and click add.
+3. Paste `https://github.com/JohnnyHowe/unity-gamesystem-singleton.git` and press **Install**
 
-## 2. Create Systems prefab
-This prefab must be in the root of a resources folder and called "Systems". This is where you'll put all of your system components.\
-Add the `SystemsInitializer` component to the root "Systems" GameObject.
+**(Recommended)** If you want a specific version, use \
+`https://github.com/JohnnyHowe/unity-gamesystem-singleton.git#<version>`
 
-I'd recommend putting them on child objects to keep it tidy. 
-So the hierarchy might look like this:
-```
-Systems
- |- SystemA
- |- SystemB
- |- SystemC
- |- SystemD
-```
+# Usage
 
-## 3. Create a System
-Just like any other Singleton
-
+## Create Your Class
 ```csharp
-public class ThingIWantToAccessEverywhere: GameSystem<ThingIWantToAccessEverywhere>
+public class ExampleGameSystem: GameSystem<PlayerInventory>
 {
-    public void DoAThing()
-    {
-        ...
-    }
+	/// AwakeSystem is called similarly to MonoBehaviour.Awake.
+	/// This is where you put your startup/initialization
+	protected override void AwakeSystem() { }
+
+	public void DoSomething() { }
 }
 ```
 
-## 4. Done
-Now you can call it anywhere
+## Create Game Systems Prefab
+Just one of these in the project. \
+Each individual `GameSystem` will live as a child of this.
 
+* Add the `SystemsStarter` script.
+
+* Place this in some resource folder.
+
+## Add Your System to the Prefab
+Create a child object and put your `GameSystem` script on it.
+
+## Access it From Anywhere
 ```csharp
-ThingIWantToAccessEverywhere.Instance.DoAThing();
-```
-## Using With Interfaces
-Due to how I've written the code, this should be a slower. It's up to you to pick your poison.
-```csharp
-public interface HandyInterface
+public class ThingThatUsesExampleGameSystem 
 {
-    public void DoAThing();
+	public void CallDoSomething()
+	{
+		ExampleGameSystem.Instance.DoSomething();
+	}
 }
-```
-```csharp
-public class ThingIWantToAccessEverywhere: GameSystem<ThingIWantToAccessEverywhere>, HandyInterface
-{
-    public void DoAThing()
-    {
-        ...
-    }
-}
-```
-And access it with
-```csharp
-GameSystem<HandyInterface>.Instance.DoAThing();
 ```
