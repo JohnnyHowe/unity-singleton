@@ -7,11 +7,11 @@ namespace JonathonOH.Unity.Singletons
 		public static T Instance { get => GetInstance(); }
 		private static T _instance;
 
-		bool ISingleton.Initialized => _instance != null;
-		private bool Initialized => ((ISingleton)this).Initialized;
+		public static bool IsInitialized => _instance != null;
+		bool ISingleton.IsInitialized => _instance != null;
 
-		bool ISingleton.Awoken => _awoken;
-		private bool Awoken => ((ISingleton)this).Awoken;
+		public static bool IsAwoken => IsInitialized && ((ISingleton)_instance).IsAwoken;
+		bool ISingleton.IsAwoken => _awoken;
 		private bool _awoken = false;
 
 		private static T GetInstance()
@@ -22,19 +22,20 @@ namespace JonathonOH.Unity.Singletons
 
 		void ISingleton.Initialize()
 		{
-			if (Awoken)
+			if (IsAwoken)
 			{
 				Debug.LogError($"{GetType().Name}.AwakeSystem called but it is already Awoken!");
 				return;
 			}
 			AwakeSystem();
+			_awoken = true;
 		}
 
 		protected virtual void AwakeSystem() { }
 
 		void ISingleton.SetInstance()
 		{
-			if (Initialized)
+			if (IsInitialized)
 			{
 				Debug.LogError($"{GetType().Name}.Initialize called but it is already Initialized!");
 				return;

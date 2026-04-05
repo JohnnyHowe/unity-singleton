@@ -36,8 +36,8 @@ namespace JonathonOH.Unity.Singletons
 			{
 				if (!child.gameObject.activeInHierarchy) continue;
 				if (!child.TryGetComponent(out ISingleton system)) continue;
-				if (system.Initialized) continue;
-				if (system.Awoken) continue;
+				if (system.IsInitialized) continue;
+				if (system.IsAwoken) continue;
 				if (Failed.Contains(system)) continue;
 				yield return system;
 			}
@@ -56,7 +56,7 @@ namespace JonathonOH.Unity.Singletons
 				return;
 			}
 
-			if (!singleton.Initialized)
+			if (!singleton.IsInitialized)
 			{
 				string typeName = singleton.GetType().Name;
 				Debug.LogError($"Could not instantiate {typeName}: {typeName}.IsInitialized() returned false!");
